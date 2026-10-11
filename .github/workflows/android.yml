@@ -19,20 +19,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Validate Gradle Wrapper or Setup Gradle
-        run: |
-          if [ ! -f gradlew ]; then
-            echo "gradlew file missing, creating one..."
-            gradle wrapper
-          fi
-
-      - name: Make Gradlew Executable
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build APK
-        run: ./gradlew assembleDebug
+        run: gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
