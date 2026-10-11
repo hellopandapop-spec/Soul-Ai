@@ -21,16 +21,22 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Validate Gradle Wrapper or Setup Gradle
+        run: |
+          if [ ! -f gradlew ]; then
+            echo "gradlew file missing, creating one..."
+            gradle wrapper
+          fi
+
       - name: Make Gradlew Executable
-        working-directory: android
         run: chmod +x gradlew
 
       - name: Build APK
-        working-directory: android
         run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          
